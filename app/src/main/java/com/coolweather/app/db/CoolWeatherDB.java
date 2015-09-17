@@ -76,7 +76,6 @@ public class CoolWeatherDB {
     public void saveCity(City city){
         if(city!=null){
             ContentValues values=new ContentValues();
-            values.put("id",city.getId());
             values.put("city_name",city.getCityName());
             values.put("city_code",city.getCityCode());
             values.put("province_id",city.getProvinceId());
@@ -86,9 +85,10 @@ public class CoolWeatherDB {
     /**
      * 从数据库读取某省下所有的城市信息。
      */
-    public List<City>loadCity(){
+    public List<City>loadCity(int provinceId){
         List<City>list=new ArrayList<City>();
-        Cursor cursor=db.query("City",null,null,null,null,null,null);
+        Cursor cursor=db.query("City",null,"province_id=?",
+                new String[]{String.valueOf(provinceId)},null,null,null);
         if(cursor.moveToFirst()){
             do {
                 City city=new City();
@@ -107,7 +107,6 @@ public class CoolWeatherDB {
     public void saveCountry(Country country){
         if(country!=null){
             ContentValues values=new ContentValues();
-            values.put("id",country.getId());
             values.put("country_name",country.getCountryName());
             values.put("country_code",country.getCountryCode());
             values.put("city_id",country.getCityId());
@@ -117,9 +116,10 @@ public class CoolWeatherDB {
     /**
      * 从数据库读取某城市下所有的县信息。
      */
-    public List<Country>loadCountry(){
+    public List<Country>loadCountry(int cityId){
         List<Country>list=new ArrayList<Country>();
-        Cursor cursor=db.query("Country",null,null,null,null,null,null);
+        Cursor cursor=db.query("Country",null,"city_id=?",
+                new String[]{String.valueOf(cityId)},null,null,null);
         if(cursor.moveToFirst()){
             do {
                 Country country=new Country();
